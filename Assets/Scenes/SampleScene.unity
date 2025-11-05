@@ -369,6 +369,7 @@ GameObject:
   - component: {fileID: 1674956266}
   - component: {fileID: 1674956271}
   - component: {fileID: 1674956272}
+  - component: {fileID: 1674956273}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -555,6 +556,20 @@ MonoBehaviour:
   currentXP: 0
   xpToNextLevel: 10
   currentLevel: 1
+--- !u!114 &1674956273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674956265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36b5b695cee3f1845b1a390b5bd88a0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponController
+  currentWeapon: {fileID: 11400000, guid: 4a76b3c7d18ac634eba93346a32b0739, type: 2}
+  detectionRadius: 10
 --- !u!1 &1816794489
 GameObject:
   m_ObjectHideFlags: 0
