@@ -368,6 +368,7 @@ GameObject:
   - component: {fileID: 1674956267}
   - component: {fileID: 1674956266}
   - component: {fileID: 1674956271}
+  - component: {fileID: 1674956272}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -539,6 +540,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   maxHealth: 100
   currentHealth: 0
+--- !u!114 &1674956272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674956265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 746adfe33227b9c4d9cf5ca580c0149c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerExperience
+  currentXP: 0
+  xpToNextLevel: 10
+  currentLevel: 1
 --- !u!1 &1816794489
 GameObject:
   m_ObjectHideFlags: 0
