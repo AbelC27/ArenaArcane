@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -15,6 +15,7 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        UnityEngine.Debug.Log($"Inamicul a luat {damage} daune, viața rămasă: {currentHealth}");
         if (currentHealth <= 0)
         {
             Die();
