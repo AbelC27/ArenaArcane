@@ -21,7 +21,9 @@ public class WeaponController : MonoBehaviour
         if (cooldownTimer <= 0f)
         {
             Attack();
-            cooldownTimer = currentWeapon.cooldown;
+            float baseCooldown = currentWeapon.cooldown;
+            float reduction = PlayerStats.Instance.cooldownReduction;
+            cooldownTimer = baseCooldown * (1.0f - reduction);
         }
     }
 

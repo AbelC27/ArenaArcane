@@ -36,4 +36,24 @@ public class UpgradeManager : MonoBehaviour
         }
         HideMenuAndResume();
     }
+
+    public void SelectUpgrade_MoveSpeed()
+    {
+        if (PlayerStats.Instance != null)
+        {
+            PlayerStats.Instance.moveSpeed *= 1.10f;
+        }
+        HideMenuAndResume();
+    }
+
+   
+    public void SelectUpgrade_Cooldown()
+    {
+        if (PlayerStats.Instance != null)
+        {
+            PlayerStats.Instance.cooldownReduction += 0.05f;
+        }
+
+        HideMenuAndResume();
+    }
 }

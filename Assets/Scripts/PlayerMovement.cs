@@ -2,10 +2,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed = 5f;
-
     private Rigidbody2D rb;
-
     private Vector2 moveInput;
 
     void Start()
@@ -15,14 +12,12 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        
         moveInput.x = Input.GetAxisRaw("Horizontal");
         moveInput.y = Input.GetAxisRaw("Vertical");
     }
 
     void FixedUpdate()
     {
-        
-        rb.MovePosition(rb.position + moveInput.normalized * speed * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + moveInput.normalized * PlayerStats.Instance.moveSpeed * Time.fixedDeltaTime);
     }
 }
