@@ -1,55 +1,60 @@
 using UnityEngine;
-// using UnityEngine.UI; 
+using UnityEngine.UI; 
 
 public class PlayerExperience : MonoBehaviour
 {
-    public int currentXP = 0;
-    public int xpToNextLevel = 10;
     public int currentLevel = 1;
+    public int currentXP = 0;
+    public int xpToNextLevel = 3; 
+
     public UpgradeManager upgradeManager;
+
+    public Slider xpSlider;
 
     void Start()
     {
-        UpdateUI();
+        UpdateXPUI();
     }
 
     public void AddXP(int amount)
     {
         currentXP += amount;
-        UnityEngine.Debug.Log($"Player gained {amount} XP. Total: {currentXP}/{xpToNextLevel}");
-
-        if (currentXP >= xpToNextLevel)
+        while (currentXP >= xpToNextLevel)
         {
+            currentXP -= xpToNextLevel;
             LevelUp();
         }
 
-        UpdateUI();
+        UpdateXPUI();
     }
 
     void LevelUp()
     {
         currentLevel++;
-        xpToNextLevel = (int)(xpToNextLevel * 1.5f);
-        UnityEngine.Debug.Log($"LEVEL UP! Player is now level {currentLevel}.");
+        xpToNextLevel = (int)(xpToNextLevel * 1.5f); 
+
+        if (xpSlider != null)
+        {
+            xpSlider.maxValue = xpToNextLevel;
+        }
+
+        UnityEngine.Debug.Log($"LEVEL UP! Level {currentLevel}");
 
         if (upgradeManager != null)
         {
             upgradeManager.ShowUpgradeMenu();
         }
-        else
-        {
-            UnityEngine.Debug.LogError("Upgrade Manager nu este conectat la PlayerExperience!");
-            Time.timeScale = 0f; 
-        }
     }
 
-    void UpdateUI()
+    void UpdateXPUI()
     {
-        // TODO: Actualizeazã un UI Slider
-        // if (xpSlider != null)
-        // {
-        //     xpSlider.maxValue = xpToNextLevel;
-        //     xpSlider.value = currentXP;
-        // }
+        if (xpSlider != null)
+        {
+            if (xpSlider.maxValue != xpToNextLevel)
+            {
+                xpSlider.maxValue = xpToNextLevel;
+            }
+            xpSlider.value = currentXP;
+        }
     }
 }

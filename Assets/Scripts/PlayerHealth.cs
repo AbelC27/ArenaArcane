@@ -1,20 +1,34 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
+using UnityEngine.UI; 
 
 public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 100;
     public int currentHealth;
 
+    public Slider healthSlider;
+
     void Start()
     {
         currentHealth = maxHealth;
+
+        if (healthSlider != null)
+        {
+            healthSlider.maxValue = maxHealth;
+            healthSlider.value = currentHealth;
+        }
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        UnityEngine.Debug.Log($"Player took {damage} damage, current health: {currentHealth}");
+
+        if (healthSlider != null)
+        {
+            healthSlider.value = currentHealth;
+        }
+
         if (currentHealth <= 0)
         {
             Die();
