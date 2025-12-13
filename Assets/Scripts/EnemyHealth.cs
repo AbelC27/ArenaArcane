@@ -5,7 +5,9 @@ public class EnemyHealth : MonoBehaviour
     public int maxHealth = 10;
     private int currentHealth;
 
+    [Header("Loot")]
     public GameObject xpGemPrefab;
+    public GameObject healthPotionPrefab; // Drag Potion Prefab here later
 
     void Start()
     {
@@ -15,7 +17,6 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        UnityEngine.Debug.Log($"Inamicul a luat {damage} daune, viața rămasă: {currentHealth}");
         if (currentHealth <= 0)
         {
             Die();
@@ -24,7 +25,13 @@ public class EnemyHealth : MonoBehaviour
 
     void Die()
     {
-        if (xpGemPrefab != null)
+        // 20% Chance to drop a potion if assigned
+        if (healthPotionPrefab != null && Random.value < 0.2f)
+        {
+            Instantiate(healthPotionPrefab, transform.position, Quaternion.identity);
+        }
+        // Otherwise drop XP
+        else if (xpGemPrefab != null)
         {
             Instantiate(xpGemPrefab, transform.position, Quaternion.identity);
         }
