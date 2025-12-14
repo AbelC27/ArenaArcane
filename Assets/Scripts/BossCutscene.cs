@@ -39,7 +39,7 @@ public class BossCutscene : MonoBehaviour
         if (bossNameText != null)
         {
             bossNameText.gameObject.SetActive(true);
-            bossNameText.text = "THE FINAL BOSS";
+            bossNameText.text = "GRAND WARDEN";
         }
 
         // 4. PAN CAMERA TO BOSS
