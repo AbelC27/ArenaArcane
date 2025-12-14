@@ -2,20 +2,24 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public float speed = 10f;
-    public float lifetime = 3f;
-    public int damage = 5;
+    // We hide these because they are now set by the WeaponController, not the Inspector
+    [HideInInspector] public float speed;
+    [HideInInspector] public float lifetime;
+    [HideInInspector] public int damage;
 
     private Vector2 moveDirection;
 
     void Start()
     {
+        // Safety check: if lifetime wasn't set, default to 3s
+        if (lifetime <= 0) lifetime = 3f;
         Destroy(gameObject, lifetime);
     }
 
     public void SetDirection(Vector2 direction)
     {
         moveDirection = direction.normalized;
+        // Use the speed variable that was set by the controller
         GetComponent<Rigidbody2D>().linearVelocity = moveDirection * speed;
     }
 
