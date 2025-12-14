@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Weapon_Shotgun
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   weaponName: Basic Spell
-  damage: 5
-  cooldown: 2
-  projectileSpeed: 10
-  range: 3
-  projectileCount: 1
-  spreadAngle: 15
-  projectilePrefab: {fileID: 0}
+  damage: 4
+  cooldown: 1.5
+  projectileSpeed: 12
+  range: 0.6
+  projectileCount: 5
+  spreadAngle: 45
+  projectilePrefab: {fileID: 5647863460964417562, guid: 8f2b06a10f88ef241948af4da4e96a8d,
+    type: 3}

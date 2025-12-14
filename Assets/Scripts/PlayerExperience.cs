@@ -1,11 +1,14 @@
 using UnityEngine;
-using UnityEngine.UI; 
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerExperience : MonoBehaviour
 {
     public int currentLevel = 1;
     public int currentXP = 0;
-    public int xpToNextLevel = 3; 
+    public int xpToNextLevel = 3;
+
+    public TextMeshProUGUI levelText;
 
     public UpgradeManager upgradeManager;
 
@@ -51,10 +54,14 @@ public class PlayerExperience : MonoBehaviour
         if (xpSlider != null)
         {
             if (xpSlider.maxValue != xpToNextLevel)
-            {
                 xpSlider.maxValue = xpToNextLevel;
-            }
             xpSlider.value = currentXP;
+        }
+
+        // Add this to update level text
+        if (levelText != null)
+        {
+            levelText.text = "Lvl " + currentLevel;
         }
     }
 }

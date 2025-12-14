@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 100;
     public int currentHealth;
     public Slider healthSlider;
+    public TextMeshProUGUI healthText;  
 
     void Start()
     {
@@ -43,6 +45,11 @@ public class PlayerHealth : MonoBehaviour
         {
             healthSlider.maxValue = maxHealth;
             healthSlider.value = currentHealth;
+        }
+        // Add this block to update text
+        if (healthText != null)
+        {
+            healthText.text = $"{currentHealth} / {maxHealth}";
         }
     }
 

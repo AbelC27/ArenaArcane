@@ -9,6 +9,10 @@ public class EnemyHealth : MonoBehaviour
     public GameObject xpGemPrefab;
     public GameObject healthPotionPrefab; // Drag Potion Prefab here later
 
+    // --- NEW: Slot for the Popup Prefab ---
+    [Header("VFX")]
+    public GameObject damagePopupPrefab;
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -17,6 +21,21 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+
+        // --- NEW: Spawn the popup logic ---
+        if (damagePopupPrefab != null)
+        {
+            // Create the popup at the enemy's position
+            GameObject popup = Instantiate(damagePopupPrefab, transform.position, Quaternion.identity);
+
+            // Set the number text
+            DamagePopup popupScript = popup.GetComponent<DamagePopup>();
+            if (popupScript != null)
+            {
+                popupScript.Setup(damage);
+            }
+        }
+
         if (currentHealth <= 0)
         {
             Die();

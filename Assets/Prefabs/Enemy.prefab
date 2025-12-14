@@ -188,3 +188,5 @@ MonoBehaviour:
     type: 3}
   healthPotionPrefab: {fileID: 509959500388006213, guid: 22d8012fac38ac44abdeaaa22208261b,
     type: 3}
+  damagePopupPrefab: {fileID: 6561552776544045342, guid: aa3194fde6be13846ac0c11c507ab8f4,
+    type: 3}

@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Weapon_Sniper
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   weaponName: Basic Spell
-  damage: 5
-  cooldown: 2
-  projectileSpeed: 10
-  range: 3
+  damage: 25
+  cooldown: 2.5
+  projectileSpeed: 25
+  range: 10
   projectileCount: 1
-  spreadAngle: 15
-  projectilePrefab: {fileID: 0}
+  spreadAngle: 0
+  projectilePrefab: {fileID: 6212880887025957164, guid: 3ebb816e204139e45ae438acd59fe6d9,
+    type: 3}

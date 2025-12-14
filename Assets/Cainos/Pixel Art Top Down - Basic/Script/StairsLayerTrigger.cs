@@ -36,18 +36,27 @@ namespace Cainos.PixelArtTopDown_Basic
             if (direction == Direction.East && other.transform.position.x > transform.position.x) SetLayerAndSortingLayer(other.gameObject, layerLower, sortingLayerLower);
         }
 
-        private void SetLayerAndSortingLayer( GameObject target, string layer, string sortingLayer )
+        private void SetLayerAndSortingLayer(GameObject target, string layer, string sortingLayer)
         {
             target.layer = LayerMask.NameToLayer(layer);
 
-            target.GetComponent<SpriteRenderer>().sortingLayerName = sortingLayer;
+            // --- FIX START ---
+            // Try to get the SpriteRenderer first
+            SpriteRenderer mainRenderer = target.GetComponent<SpriteRenderer>();
+
+            // Only access .sortingLayerName if the component actually exists
+            if (mainRenderer != null)
+            {
+                mainRenderer.sortingLayerName = sortingLayer;
+            }
+            // --- FIX END ---
+
             SpriteRenderer[] srs = target.GetComponentsInChildren<SpriteRenderer>();
             foreach (SpriteRenderer sr in srs)
             {
                 sr.sortingLayerName = sortingLayer;
             }
         }
-
         public enum Direction
         {
             North,
