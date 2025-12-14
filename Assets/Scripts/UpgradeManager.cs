@@ -12,8 +12,13 @@ public class UpgradeManager : MonoBehaviour
 
     public float timeToWinInMinutes = 20f; 
     private float timeToWinInSeconds; 
-    private bool isGameOver = false; 
+    private bool isGameOver = false;
 
+    [Header("Boss Fight Settings")]
+    public GameObject bossPrefab;
+    public Transform bossSpawnPoint; // Place this slightly away from the center
+    public BossCutscene cutsceneManager;
+    public EnemySpawner enemySpawner; // To stop small enemies
 
     [Header("Upgrade UI (Mecanica 8 & 9)")]
     public GameObject upgradeMenu;
@@ -48,10 +53,15 @@ public class UpgradeManager : MonoBehaviour
 
         if (timeRemaining <= 0)
         {
-            timeRemaining = 0; 
-            isGameOver = true; 
-            HandleWinCondition(); 
+            timeRemaining = 0;
+
+            // IF GAME OVER IS FALSE, TRIGGER BOSS INSTEAD OF WINNING
+            if (!isGameOver)
+            {
+                StartBossPhase();
+            }
         }
+
         float minutes = Mathf.FloorToInt(timeRemaining / 60);
         float seconds = Mathf.FloorToInt(timeRemaining % 60);
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
@@ -110,5 +120,35 @@ public class UpgradeManager : MonoBehaviour
             PlayerStats.Instance.cooldownReduction += 0.05f;
         }
         HideMenuAndResume();
+    }
+
+    void StartBossPhase()
+    {
+        isGameOver = true; // Stop the timer logic from running again
+
+        // 1. Kill all existing small enemies
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject e in enemies)
+        {
+            Destroy(e);
+        }
+
+        // 2. Stop Spawner
+        if (enemySpawner != null) enemySpawner.enabled = false;
+
+        // 3. Spawn Boss
+        GameObject boss = Instantiate(bossPrefab, bossSpawnPoint.position, Quaternion.identity);
+
+        // 4. Start Cutscene
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (cutsceneManager != null && player != null)
+        {
+            cutsceneManager.StartBossSequence(boss, player.transform);
+        }
+
+    }
+    public void BossDefeated()
+    {
+        HandleWinCondition();
     }
 }

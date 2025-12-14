@@ -2250,6 +2250,10 @@ MonoBehaviour:
   survivalTime: 0
   timerText: {fileID: 512198762}
   timeToWinInMinutes: 3
+  bossPrefab: {fileID: 0}
+  bossSpawnPoint: {fileID: 0}
+  cutsceneManager: {fileID: 0}
+  enemySpawner: {fileID: 0}
   upgradeMenu: {fileID: 116105495}
   auraWeapon: {fileID: 1660607215}
   lightningWeapon: {fileID: 1674956274}
@@ -3206,11 +3210,14 @@ MonoBehaviour:
   enemyPrefab: {fileID: 1899443852182500518, guid: f154eba14274e1c40bf79c1e40687e91,
     type: 3}
   playerTransform: {fileID: 1674956270}
-  spawnRadius: 15
+  minSpawnRadius: 6
+  maxSpawnRadius: 12
   spawnInterval: 1
   timeBetweenDifficultyIncrease: 30
   spawnIntervalDecrement: 0.05
   minSpawnInterval: 0.2
+  minMapLimit: {x: -20, y: -20}
+  maxMapLimit: {x: 20, y: 20}
 --- !u!4 &1816794491
 Transform:
   m_ObjectHideFlags: 0

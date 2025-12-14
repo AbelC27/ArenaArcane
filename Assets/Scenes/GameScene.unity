@@ -12373,9 +12373,13 @@ MonoBehaviour:
   survivalTime: 0
   timerText: {fileID: 2120166793}
   timeToWinInMinutes: 2
+  bossPrefab: {fileID: 0}
+  bossSpawnPoint: {fileID: 0}
+  cutsceneManager: {fileID: 0}
+  enemySpawner: {fileID: 0}
   upgradeMenu: {fileID: 358437127}
-  auraWeapon: {fileID: 0}
-  lightningWeapon: {fileID: 0}
+  auraWeapon: {fileID: 1897140339}
+  lightningWeapon: {fileID: 1377043450}
 --- !u!114 &476700766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12766,7 +12770,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 476700765}
         m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
         m_MethodName: SelectUpgrade_Cooldown
         m_Mode: 1
@@ -21310,7 +21314,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 476700765}
         m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
         m_MethodName: SelectUpgrade_Lightning
         m_Mode: 1
@@ -28919,6 +28923,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1468547043}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1377043450 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4281685995941264052, guid: edef5807992c0d64488c00c266b4da20,
+    type: 3}
+  m_PrefabInstance: {fileID: 1468547043}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26e7bed2564633047aef1e6bcfe655a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LightningWeapon
 --- !u!1001 &1383902246
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31593,6 +31609,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1547640422}
   m_CullTransparentMesh: 1
+--- !u!1 &1547848473
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1547848475}
+  - component: {fileID: 1547848474}
+  m_Layer: 0
+  m_Name: BossCutsceneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1547848474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547848473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f908db5ddc632984481d0bce31a6d71f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossCutscene
+  cameraTransform: {fileID: 2051541663}
+  bossNameText: {fileID: 0}
+  cameraSpeed: 5
+--- !u!4 &1547848475
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547848473}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1554546294
 GameObject:
   m_ObjectHideFlags: 0
@@ -33538,7 +33601,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 476700765}
         m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
         m_MethodName: SelectUpgrade_Aura
         m_Mode: 1
@@ -34596,7 +34659,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 476700765}
         m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
         m_MethodName: SelectUpgrade_MoveSpeed
         m_Mode: 1
@@ -36437,6 +36500,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1365424424466870936, guid: af67ceadc087899479232f75d2b79d59,
     type: 3}
   m_PrefabInstance: {fileID: 1871598175}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1897140339 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3993156974285910464, guid: edef5807992c0d64488c00c266b4da20,
+    type: 3}
+  m_PrefabInstance: {fileID: 1468547043}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1899773001
 PrefabInstance:
@@ -41918,3 +41987,4 @@ SceneRoots:
   - {fileID: 1355548872}
   - {fileID: 186865705}
   - {fileID: 1554546299}
+  - {fileID: 1547848475}
