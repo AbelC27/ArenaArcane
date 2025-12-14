@@ -14,6 +14,7 @@ public class WeaponController : MonoBehaviour
 
     void Update()
     {
+        if (Time.timeScale == 0f) return;
         if (currentWeapon == null) return;
 
         cooldownTimer -= Time.deltaTime;
