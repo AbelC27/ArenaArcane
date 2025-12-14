@@ -6,27 +6,45 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody2D rb;
     Vector2 movement;
 
-    [Header("Dash Settings")]
-    public float dashSpeed = 15f;  
-    public float dashDuration = 0.2f;
-    public float dashCost = 30f;     
+    [Header("Audio")]
+    public AudioSource footstepSource; 
+    public AudioClip footstepSound;    
 
-    private bool isDashing = false;  
+    [Header("Dash Settings")]
+    public float dashSpeed = 15f;
+    public float dashDuration = 0.2f;
+    public float dashCost = 30f;
+
+    private bool isDashing = false;
     private float dashTimeLeft;
 
-    public PlayerStamina playerStamina; 
+    public PlayerStamina playerStamina;
 
     void Update()
     {
-        if (isDashing)
-        {
-            return;
-        }
+        if (isDashing) return;
 
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetKeyDown(KeyCode.Space) && movement != Vector2.zero) 
+        if (movement.sqrMagnitude > 0) 
+        {
+            if (footstepSource != null && !footstepSource.isPlaying)
+            {
+                footstepSource.clip = footstepSound;
+                footstepSource.loop = true; 
+                footstepSource.Play();
+            }
+        }
+        else 
+        {
+            if (footstepSource != null && footstepSource.isPlaying)
+            {
+                footstepSource.Stop();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && movement != Vector2.zero)
         {
             AttemptDash();
         }
@@ -38,10 +56,7 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.MovePosition(rb.position + movement.normalized * dashSpeed * Time.fixedDeltaTime);
             dashTimeLeft -= Time.fixedDeltaTime;
-            if (dashTimeLeft <= 0)
-            {
-                isDashing = false; 
-            }
+            if (dashTimeLeft <= 0) isDashing = false;
         }
         else
         {

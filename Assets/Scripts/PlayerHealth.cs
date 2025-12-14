@@ -8,12 +8,23 @@ public class PlayerHealth : MonoBehaviour
     public int maxHealth = 100;
     public int currentHealth;
     public Slider healthSlider;
-    public TextMeshProUGUI healthText;  
+    public TextMeshProUGUI healthText;
+
+    [Header("Death Settings")]
+    public GameObject deathScreenPanel;
+    public CutsceneManager cutsceneManager;
+    public Dialogue defeatDialogue;
+
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip loseSound; 
 
     void Start()
     {
         currentHealth = maxHealth;
         UpdateHealthUI();
+        if (deathScreenPanel != null) deathScreenPanel.SetActive(false);
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
     }
 
     public void TakeDamage(int damage)
@@ -27,16 +38,11 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    // --- NEW FUNCTION ---
     public void Heal(int amount)
     {
         currentHealth += amount;
-        if (currentHealth > maxHealth)
-        {
-            currentHealth = maxHealth;
-        }
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
         UpdateHealthUI();
-        UnityEngine.Debug.Log("Player Healed!");
     }
 
     void UpdateHealthUI()
@@ -46,7 +52,6 @@ public class PlayerHealth : MonoBehaviour
             healthSlider.maxValue = maxHealth;
             healthSlider.value = currentHealth;
         }
-        // Add this block to update text
         if (healthText != null)
         {
             healthText.text = $"{currentHealth} / {maxHealth}";
@@ -55,7 +60,24 @@ public class PlayerHealth : MonoBehaviour
 
     void Die()
     {
-        UnityEngine.Debug.Log("Player has died!");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (audioSource != null && loseSound != null)
+        {
+            audioSource.PlayOneShot(loseSound);
+        }
+
+        Time.timeScale = 0f;
+
+        if (deathScreenPanel != null) deathScreenPanel.SetActive(true);
+
+        if (cutsceneManager != null && defeatDialogue != null)
+        {
+            cutsceneManager.dialogueUI.SetActive(true);
+            cutsceneManager.StartDialogue(defeatDialogue);
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 }

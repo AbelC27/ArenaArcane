@@ -5,9 +5,11 @@ public class WeaponController : MonoBehaviour
 {
     public WeaponData currentWeapon;
     public WeaponData[] availableWeapons;
-
-    // NEW: Reference to the UI Manager
     public WeaponUIManager uiManager;
+
+    [Header("Audio")]
+    public AudioSource weaponAudioSource; 
+    public AudioClip shootSound;          
 
     private float cooldownTimer;
     public float detectionRadius = 10f;
@@ -15,25 +17,23 @@ public class WeaponController : MonoBehaviour
     void Start()
     {
         cooldownTimer = 0f;
-        // Ensure UI matches startup weapon
         if (uiManager != null) uiManager.UpdateWeaponUI(0);
+
+        if (weaponAudioSource == null) weaponAudioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
-        // 1. Switch Weapon & Update UI
         if (Input.GetKeyDown(KeyCode.Alpha1) && availableWeapons.Length > 0)
         {
             currentWeapon = availableWeapons[0];
             if (uiManager != null) uiManager.UpdateWeaponUI(0);
         }
-
         if (Input.GetKeyDown(KeyCode.Alpha2) && availableWeapons.Length > 1)
         {
             currentWeapon = availableWeapons[1];
             if (uiManager != null) uiManager.UpdateWeaponUI(1);
         }
-
         if (Input.GetKeyDown(KeyCode.Alpha3) && availableWeapons.Length > 2)
         {
             currentWeapon = availableWeapons[2];
@@ -42,7 +42,6 @@ public class WeaponController : MonoBehaviour
 
         if (currentWeapon == null) return;
 
-        // 2. Cooldown Logic
         cooldownTimer -= Time.deltaTime;
         if (cooldownTimer <= 0f)
         {
@@ -52,12 +51,15 @@ public class WeaponController : MonoBehaviour
         }
     }
 
-    // ... [Keep the Attack and FindClosestEnemy functions exactly as they were] ...
     void Attack()
     {
-        // (Copy your existing Attack logic here from the previous step)
         Transform target = FindClosestEnemy();
         if (target == null) return;
+
+        if (weaponAudioSource != null && shootSound != null)
+        {
+            weaponAudioSource.PlayOneShot(shootSound);
+        }
 
         Vector2 targetDirection = (target.position - transform.position).normalized;
         float startAngle = -currentWeapon.spreadAngle / 2f;
@@ -83,7 +85,6 @@ public class WeaponController : MonoBehaviour
 
     Transform FindClosestEnemy()
     {
-        // (Copy your existing FindClosestEnemy logic here)
         Transform closestEnemy = null;
         float closestDistance = Mathf.Infinity;
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
