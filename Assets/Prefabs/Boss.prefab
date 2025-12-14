@@ -184,8 +184,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c10eda121683ce4e981e49af0e95d58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossShooting
-  projectilePrefab: {fileID: 0}
-  firePoint: {fileID: 0}
+  projectilePrefab: {fileID: 6212880887025957164, guid: b14d00fb008d4314c82bae9404119f0a,
+    type: 3}
+  firePoint: {fileID: 1309229277552851949}
   fireRate: 1.5
   projectileSpeed: 8
 --- !u!114 &-3788221470942967255
