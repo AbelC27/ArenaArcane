@@ -25,13 +25,24 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Enemy"))
+        // Check if the object we hit is an Enemy OR a Boss
+        // (Make sure your Boss object has the tag "Enemy" or add a check for "Boss" tag if you use that)
+        if (other.CompareTag("Enemy") || other.CompareTag("Boss"))
         {
+            // Try to get EnemyHealth
             EnemyHealth enemy = other.GetComponent<EnemyHealth>();
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);
             }
+
+            // Try to get BossHealth
+            BossHealth boss = other.GetComponent<BossHealth>();
+            if (boss != null)
+            {
+                boss.TakeDamage(damage);
+            }
+
             Destroy(gameObject);
         }
     }
