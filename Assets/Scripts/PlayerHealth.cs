@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,43 +14,36 @@ public class PlayerHealth : MonoBehaviour
     public TextMeshProUGUI healthText;
 
     [Header("Death Settings (Lose)")]
-    public GameObject deathScreenPanel;   // Ecranul negru
-    public EndingCutscene endingManager;  // Scriptul nou pentru final (pune EndingUI aici)
-    public Dialogue defeatDialogue;       // Replicile Boss-ului
+    public GameObject deathScreenPanel;
+    public EndingCutscene endingManager;
+    public Dialogue defeatDialogue;
 
     [Header("Audio")]
     public AudioSource audioSource;
     public AudioClip loseSound;
+    public AudioSource backgroundMusic;
+    public AudioClip hitSound;
 
     void Start()
     {
         currentHealth = maxHealth;
         UpdateHealthUI();
 
-        // 1. Găsim automat Ending Manager dacă e gol
-        if (endingManager == null)
-        {
-            endingManager = FindObjectOfType<EndingCutscene>();
-            if (endingManager == null) UnityEngine.Debug.LogError("ATENȚIE: Nu am găsit niciun obiect cu scriptul 'EndingCutscene' în scenă!");
-        }
+        if (endingManager == null) endingManager = FindObjectOfType<EndingCutscene>();
 
-        // 2. Găsim automat Death Panel dacă e gol (căutăm după nume)
         if (deathScreenPanel == null)
         {
             GameObject panel = GameObject.Find("DeathPanel");
             if (panel != null) deathScreenPanel = panel;
         }
+        if (deathScreenPanel != null) deathScreenPanel.SetActive(false);
 
-        // 3. Ascundem ecranul negru la început
-        if (deathScreenPanel != null)
-        {
-            deathScreenPanel.SetActive(false);
-        }
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
 
-        // 4. Găsim sursa audio
-        if (audioSource == null)
+        if (backgroundMusic == null)
         {
-            audioSource = GetComponent<AudioSource>();
+            GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
+            if (cam != null) backgroundMusic = cam.GetComponent<AudioSource>();
         }
     }
 
@@ -57,6 +51,11 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth -= damage;
         UpdateHealthUI();
+
+        if (currentHealth > 0 && audioSource != null && hitSound != null)
+        {
+            audioSource.PlayOneShot(hitSound);
+        }
 
         if (currentHealth <= 0)
         {
@@ -67,10 +66,7 @@ public class PlayerHealth : MonoBehaviour
     public void Heal(int amount)
     {
         currentHealth += amount;
-        if (currentHealth > maxHealth)
-        {
-            currentHealth = maxHealth;
-        }
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
         UpdateHealthUI();
     }
 
@@ -91,31 +87,35 @@ public class PlayerHealth : MonoBehaviour
     {
         UnityEngine.Debug.Log("Player has died!");
 
-        // 1. Oprim timpul
-        Time.timeScale = 0f;
+        AudioSource[] allSources = FindObjectsOfType<AudioSource>();
+        foreach (AudioSource source in allSources)
+        {
+            if (source != audioSource)
+            {
+                source.Stop();
+            }
+        }
+        if (GetComponent<PlayerMovement>() != null) GetComponent<PlayerMovement>().enabled = false;
+        if (GetComponent<WeaponController>() != null) GetComponent<WeaponController>().enabled = false;
 
-        // 2. Sunet de înfrângere
         if (audioSource != null && loseSound != null)
         {
+            audioSource.Stop(); 
             audioSource.PlayOneShot(loseSound);
         }
+        Time.timeScale = 0f;
 
-        // 3. Activăm ecranul negru
         if (deathScreenPanel != null)
         {
             deathScreenPanel.SetActive(true);
         }
 
-        // 4. Pornim dialogul de final
         if (endingManager != null && defeatDialogue != null)
         {
-            // Apelăm funcția din noul script EndingCutscene
             endingManager.StartEndingDialogue(defeatDialogue);
         }
         else
         {
-            // Siguranță: Dacă ai uitat să pui EndingUI, dăm restart jocului
-            UnityEngine.Debug.LogWarning("Ending Manager sau Dialogue lipsă! Restarting level...");
             Time.timeScale = 1f;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }

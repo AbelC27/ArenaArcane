@@ -33,11 +33,8 @@ public class EndingCutscene : MonoBehaviour
         if (uiPanel != null)
         {
             uiPanel.SetActive(true);
-            UnityEngine.Debug.Log("URGENT: Am dat SetActive(true) la panel!"); // <--- Adaugă asta
-        }
-        else
-        {
-            UnityEngine.Debug.LogError("URGENT: UI Panel este NULL! Trage obiectul EndingUI în căsuța scriptului!");
+            // Această linie mută panelul la finalul listei vizuale, deci va fi desenat ultimul (deasupra)
+            uiPanel.transform.SetAsLastSibling();
         }
 
         Time.timeScale = 0f;

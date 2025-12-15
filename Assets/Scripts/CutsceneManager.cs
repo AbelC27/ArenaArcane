@@ -29,7 +29,8 @@ public class CutsceneManager : MonoBehaviour
         // 1. FREEZE THE GAME WORLD
         Time.timeScale = 0f;
 
-        // 2. Enable UI
+        UnityEngine.Debug.Log("Cutscene a început! Se încarcã dialogul...");
+
         dialogueUI.SetActive(true);
 
         // 3. Start the conversation
