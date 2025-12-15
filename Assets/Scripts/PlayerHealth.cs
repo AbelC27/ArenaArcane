@@ -26,20 +26,17 @@ public class PlayerHealth : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1f;
         currentHealth = maxHealth;
         UpdateHealthUI();
 
         if (endingManager == null) endingManager = FindObjectOfType<EndingCutscene>();
 
-        if (deathScreenPanel == null)
-        {
-            GameObject panel = GameObject.Find("DeathPanel");
-            if (panel != null) deathScreenPanel = panel;
-        }
+        // Nu mai ascundem panelul aici automat, ca sa nu stricam setarile din editor, 
+        // dar ne asiguram ca e oprit daca e cazul.
         if (deathScreenPanel != null) deathScreenPanel.SetActive(false);
 
         if (audioSource == null) audioSource = GetComponent<AudioSource>();
-
         if (backgroundMusic == null)
         {
             GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
@@ -85,39 +82,56 @@ public class PlayerHealth : MonoBehaviour
 
     void Die()
     {
-        UnityEngine.Debug.Log("Player has died!");
+        UnityEngine.Debug.Log("Player Died.");
 
+        // Oprim muzica
         AudioSource[] allSources = FindObjectsOfType<AudioSource>();
         foreach (AudioSource source in allSources)
         {
-            if (source != audioSource)
-            {
-                source.Stop();
-            }
+            if (source != audioSource) source.Stop();
         }
+
+        // Sunet de moarte
+        if (audioSource != null && loseSound != null)
+        {
+            audioSource.PlayOneShot(loseSound);
+        }
+
+        // Dezactivam player-ul
         if (GetComponent<PlayerMovement>() != null) GetComponent<PlayerMovement>().enabled = false;
         if (GetComponent<WeaponController>() != null) GetComponent<WeaponController>().enabled = false;
 
-        if (audioSource != null && loseSound != null)
-        {
-            audioSource.Stop(); 
-            audioSource.PlayOneShot(loseSound);
-        }
-        Time.timeScale = 0f;
+        // --- AICI ESTE SCHIMBAREA IMPORTANTA ---
 
+        // 1. Incercam sa pornim dialogul de final daca exista
+        if (endingManager != null && defeatDialogue != null)
+        {
+            endingManager.StartEndingDialogue(defeatDialogue);
+        }
+
+        // 2. Afisam si Death Screen-ul (panoul negru sau "You Died")
         if (deathScreenPanel != null)
         {
             deathScreenPanel.SetActive(true);
         }
 
-        if (endingManager != null && defeatDialogue != null)
-        {
-            endingManager.StartEndingDialogue(defeatDialogue);
-        }
-        else
-        {
-            Time.timeScale = 1f;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
+        // 3. Pornim secventa de iesire
+        StartCoroutine(QuitGameSequence());
+    }
+
+    IEnumerator QuitGameSequence()
+    {
+        // Oprim timpul CA SA NU MAI POTI JUCA, dar UI-ul ramane pe ecran
+        Time.timeScale = 0f;
+
+        // Asteptam 4 secunde (timp real) ca jucatorul sa citeasca dialogul
+        yield return new WaitForSecondsRealtime(4f);
+
+        UnityEngine.Debug.Log("Quitting...");
+        UnityEngine.Application.Quit();
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 }
